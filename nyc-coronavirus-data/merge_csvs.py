@@ -6,7 +6,9 @@ from datetime import datetime
 
 def main():
     raw_csvs = glob.glob('raw/*.csv')
-    raw_csvs.sort(key=lambda x: datetime.strptime(x[:-4], 'raw/%m-%d-%Y'))
+    raw_csvs.sort(
+        key=lambda x: datetime.strptime(x[:-4], 'raw/%Y-%m-%d'),
+        reverse=True)
     # Read the various CSVs as DictReaders and output them with a
     # DictWriter: this allows us to protect against the different CSV
     # files having different column orders.

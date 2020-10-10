@@ -12,17 +12,16 @@ jobs:
     steps:
     - name: Check out this repo
       uses: actions/checkout@v2
-    - name: Fetch latest data
+    - name: Fetch latest data and merge it into a dated CSV
       run: |-
-        curl https://raw.githubusercontent.com/nychealth/coronavirus-data/master/recent/recent-4-week-by-modzcta.csv > recent-4-week-by-modzcta.csv
+        (cd nyc-coronavirus-data/ && python scrape.py)
+        (cd nyc-coronavirus-data/ && python merge_csvs.py)
     - name: Commit and push if it changed
       run: |-
         ls
         git config user.name "Automated"
         git config user.email "actions@users.noreply.github.com"
-        timestamp=$(date -u +"%m-%d-%Y")
-        mv recent-4-week-by-modzcta.csv nyc-coronavirus-data/raw/${timestamp}.csv
-        (cd nyc-coronavirus-data/ && python merge_csvs.py)
+        timestamp=$(date -u +"%Y-%m-%d")
         git add -A
         git commit -m "Latest data: ${timestamp}" || exit 0
         git push
