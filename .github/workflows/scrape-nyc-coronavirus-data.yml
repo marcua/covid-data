@@ -12,6 +12,9 @@ jobs:
     steps:
     - name: Check out this repo
       uses: actions/checkout@v2
+    - name: Install requirements
+      run: |-
+        pip install -r requirements.txt
     - name: Fetch latest data and merge it into a dated CSV
       run: |-
         (cd nyc-coronavirus-data/ && python scrape.py)
